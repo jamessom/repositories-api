@@ -10,6 +10,22 @@ app.use(cors());
 
 const repositories = [];
 
+function checkRepositoryID(request, response, next) {
+  const { id } = request.params;
+
+  const repositoryIndex = repositories.findIndex(repository => repository.id === id);
+
+  if (repositoryIndex < 0) {
+    return response.status(400).json({
+      error: "Repository not found",
+    });
+  }
+
+  next();
+};
+
+app.use("/repositories/:id", checkRepositoryID);
+
 app.get("/repositories", (request, response) => {
   response.json(repositories);
 });
@@ -35,7 +51,24 @@ app.post("/repositories", (request, response) => {
 });
 
 app.put("/repositories/:id", (request, response) => {
-  // TODO
+  const { id } = request.params;
+  const {
+    title,
+    url,
+    techs
+  } = request.body;
+
+  const repositoryIndex = repositories.findIndex(repository => repository.id === id);
+
+  const repository = Object.assign(repositories[repositoryIndex], {
+    title,
+    url,
+    techs,
+  });
+
+  repositories[repositoryIndex] = repository;
+
+  response.json(repositories[repositoryIndex]);
 });
 
 app.delete("/repositories/:id", (request, response) => {
