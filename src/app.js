@@ -27,7 +27,7 @@ function checkRepositoryID(request, response, next) {
 app.use("/repositories/:id", checkRepositoryID);
 
 app.get("/repositories", (request, response) => {
-  response.json(repositories);
+  return response.json(repositories);
 });
 
 app.post("/repositories", (request, response) => {
@@ -47,7 +47,7 @@ app.post("/repositories", (request, response) => {
 
   repositories.push(repository);
 
-  response.json(repository);
+  return response.json(repository);
 });
 
 app.put("/repositories/:id", (request, response) => {
@@ -68,7 +68,7 @@ app.put("/repositories/:id", (request, response) => {
 
   repositories[repositoryIndex] = repository;
 
-  response.json(repositories[repositoryIndex]);
+  return response.json(repositories[repositoryIndex]);
 });
 
 app.delete("/repositories/:id", (request, response) => {
